@@ -1,6 +1,7 @@
 { "dependencies" :
   { "d3" : "latest"
-  , "mustache" : "latest"
-  , "jsdom" : "latest"
+    , "mustache" : "latest"
+    , "jsdom" : "latest"
+    , "socket.io": "latest"
   }
 }

@@ -1,9 +1,11 @@
+var socket = io('http://' + document.domain + ':' + location.port + '/');
+
 var counter = {{counter}};
 
 {{update}}
 
-setInterval(function () {
-    counter++;
-    update('#counter', counter);
-}, 1000);
+socket.on('counter', function (counter) {
+    console.log('received data:',counter);
+    update('#counter', counter)
+})
 

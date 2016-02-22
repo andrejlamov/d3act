@@ -3,6 +3,8 @@ var jsdom = require('jsdom');
 var fs = require('fs');
 var d3 = require('d3');
 var mustache = require('mustache');
+var socketio = require('socket.io');
+
 
 var index = fs.readFileSync("index.html", "utf-8");
 
@@ -15,7 +17,8 @@ function update(s, counter) {
         .text(counter);
 }
 
-var server = http.createServer(function (req, res) {
+
+var app = http.createServer(function (req, res) {
     var path = __dirname + req.url;
     if(req.url.startsWith('./node_modules/')) {
         // Serve static libs
@@ -40,8 +43,15 @@ var server = http.createServer(function (req, res) {
     }
 });
 
-server.listen(8080, function() {
+var io = socketio(app);
+
+app.listen(8080, function() {
     setInterval(function () {
-        console.log(counter++)
+        console.log(counter++);
+        io.emit('counter', counter);
     }, 1000);
 });
+
+io.on('connection', function (socket) {
+    console.log('a client connected');
+})
